@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: app1
+  # these labels are deployment related labels
+  labels:
+    app: app1
+    purpose: ingress
+spec:
+  selector:
+    matchLabels:
+      app: app1
+      purpose: ingress
+  # pod definition
+  template:
+    metadata:
+      labels:
+        app: app1
+        purpose: ingress
+    spec:
+      containers:
+      - name: app1
+        image: joindevops/app1:1.0
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  selector:
+    app: app1
+    purpose: ingress
+  ports:
+  - protocol: TCP
+    port: 80 #service-port
+    targetPort: 80 #target-port
